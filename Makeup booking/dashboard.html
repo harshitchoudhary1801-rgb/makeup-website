@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+body{
+  font-family:Arial;
+  padding:20px;
+  background:#111;
+  color:white;
+}
+
+h1{
+  text-align:center;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th,td{
+  border:1px solid #444;
+  padding:10px;
+  text-align:center;
+}
+
+th{
+  background:#ff4d88;
+}
+
+button{
+  padding:6px 10px;
+  background:red;
+  color:white;
+  border:none;
+  cursor:pointer;
+  border-radius:5px;
+  margin:5px;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.logout{
+  background:#00b894;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.empty{
+  text-align:center;
+  color:#bbb;
+  padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Booking Dashboard</h1>
+
+<div class="actions">
+  <button onclick="logout()" class="logout">Logout</button>
+  <button onclick="loadBookings()">Refresh</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Service</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDabCgy-u99Kw3ubXgvb2gDxH8l9MQUZ48",
+  authDomain: "makeup-booking-92007.firebaseapp.com",
+  projectId: "makeup-booking-92007"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const tableBody = document.getElementById("tableBody");
+
+/* Protect page */
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "admin.html";
+    return;
+  }
+  await loadBookings();
+});
+
+/* Load bookings */
+window.loadBookings = async function () {
+  tableBody.innerHTML = "";
+
+  try {
+    const querySnapshot = await getDocs(collection(db, "bookings"));
+
+    if (querySnapshot.empty) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6" class="empty">No bookings found</td>
+        </tr>
+      `;
+      return;
+    }
+
+    querySnapshot.forEach((docSnap) => {
+      const b = docSnap.data();
+
+      const row = document.createElement("tr");
+      row.id = "row-" + docSnap.id;
+
+      row.innerHTML = `
+        <td>${b.name || ""}</td>
+        <td>${b.phone || ""}</td>
+        <td>${b.service || ""}</td>
+        <td>${b.date || ""}</td>
+        <td>${b.time || ""}</td>
+        <td>
+          <button onclick="deleteBooking('${docSnap.id}')">Delete</button>
+        </td>
+      `;
+
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">Failed to load bookings</td>
+      </tr>
+    `;
+  }
+};
+
+/* Delete booking */
+window.deleteBooking = async function (id) {
+  try {
+    console.log("Deleting booking id:", id);
+
+    const ref = doc(db, "bookings", id);
+    await deleteDoc(ref);
+
+    const row = document.getElementById("row-" + id);
+    if (row) row.remove();
+
+    if (tableBody.children.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6" class="empty">No bookings found</td>
+        </tr>
+      `;
+    }
+
+    console.log("Booking deleted successfully");
+
+  } catch (error) {
+    console.error("Delete failed:", error);
+    alert("Delete failed: " + error.message);
+  }
+};
+
+/* Logout */
+window.logout = async function () {
+  try {
+    await signOut(auth);
+    window.location.href = "admin.html";
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
+</script>
+
+</body>
+</html>

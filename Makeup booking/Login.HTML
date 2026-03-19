@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Login - Makeup Booking</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+text-align:center;
+width:320px;
+}
+
+h2{
+color:#ff4d88;
+margin-bottom:20px;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:14px;
+}
+
+button{
+width:95%;
+padding:10px;
+background:#ff4d88;
+border:none;
+color:white;
+font-size:16px;
+cursor:pointer;
+border-radius:6px;
+transition:0.3s;
+}
+
+button:hover{
+background:#ff2a6d;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Admin Login</h2>
+
+<input id="username" placeholder="Username">
+
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+/* ADMIN LOGIN FUNCTION */
+
+function login(){
+
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+
+/* SET YOUR ADMIN CREDENTIALS HERE */
+
+let adminUser = "ishika";
+let adminPass = "makeup2026";
+
+if(user === adminUser && pass === adminPass){
+
+/* SAVE LOGIN STATUS */
+
+localStorage.setItem("adminLoggedIn","true");
+
+/* OPEN ADMIN DASHBOARD */
+
+window.location.href = "admin.html";
+
+}
+else{
+
+alert("Invalid username or password");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

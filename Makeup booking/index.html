@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Make by Ishkia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#000;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .video-bg{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center 35%;
+      z-index:-4;
+      opacity:0;
+      transform:scale(1.04);
+      filter:brightness(1.12) contrast(1.08) saturate(1.05);
+      transition:opacity 1.8s ease-in-out, transform 7s ease-in-out, filter .4s ease;
+      background:#000;
+    }
+
+    .video-bg.active{
+      opacity:1;
+      transform:scale(1.01);
+    }
+
+    .video-overlay{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.15), rgba(0,0,0,0.35)),
+        radial-gradient(circle at center, rgba(255,192,203,0.08), rgba(0,0,0,0.18));
+    }
+
+    body.blur .video-bg{
+      filter:brightness(1.02) blur(8px);
+    }
+
+    .navbar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:100;
+      padding:18px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      transition:transform 0.35s ease, background 0.3s ease;
+    }
+
+    .navbar.hide{
+      transform:translateY(-100%);
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:'Great Vibes',cursive;
+      font-size:42px;
+      color:#fff;
+      text-shadow:0 4px 18px rgba(0,0,0,0.25);
+    }
+
+    .brand-sub{
+      font-size:11px;
+      letter-spacing:4px;
+      margin-top:4px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.85);
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      font-size:15px;
+      font-weight:500;
+    }
+
+    .nav-links a{
+      position:relative;
+      transition:.25s ease;
+    }
+
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:0;
+      height:2px;
+      background:#ff5c96;
+      transition:.3s ease;
+      border-radius:999px;
+    }
+
+    .nav-links a:hover{
+      color:#ffd4e3;
+      transform:translateY(-1px);
+    }
+
+    .nav-links a:hover::after{
+      width:100%;
+    }
+
+    .nav-book{
+      padding:12px 22px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.16);
+      border:1px solid rgba(255,255,255,0.22);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 8px 18px rgba(0,0,0,0.18);
+    }
+
+    .nav-book:hover{
+      background:rgba(255,255,255,0.24);
+    }
+
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      padding:140px 24px 60px;
+      position:relative;
+    }
+
+    .hero-content{
+      width:100%;
+      max-width:1200px;
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      text-align:left;
+      padding-left:40px;
+    }
+
+    .hero-left{
+      max-width:700px;
+      animation:fadeUp 1s ease;
+    }
+
+    .hero-tag{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      font-size:13px;
+      letter-spacing:.5px;
+      margin-bottom:18px;
+    }
+
+    .hero-left h1{
+      font-size:64px;
+      line-height:1.02;
+      font-weight:700;
+      margin-bottom:16px;
+      text-shadow:0 8px 24px rgba(0,0,0,0.22);
+      max-width:720px;
+    }
+
+    .hero-left h1 span{
+      color:#ffd3e3;
+    }
+
+    .hero-left p{
+      font-size:18px;
+      line-height:1.7;
+      color:rgba(255,255,255,0.88);
+      max-width:560px;
+      margin:0 0 28px 0;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      justify-content:flex-start;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-admin{
+      padding:15px 28px;
+      border-radius:999px;
+      font-weight:600;
+      transition:.3s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#ff4d88,#ff0066);
+      color:#fff;
+      box-shadow:0 12px 28px rgba(255,0,102,.28);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 18px 34px rgba(255,0,102,.34);
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.2);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      color:#fff;
+    }
+
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,0.22);
+    }
+
+    .btn-admin{
+      background:rgba(255,255,255,0.14);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-admin:hover{
+      background:rgba(255,255,255,0.22);
+    }
+
+    .section{
+      position:relative;
+      z-index:2;
+      padding:90px 24px;
+    }
+
+    .section-inner{
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:42px;
+    }
+
+    .section-title h2{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    .section-title p{
+      color:rgba(255,255,255,0.86);
+      font-size:16px;
+      max-width:700px;
+      margin:0 auto;
+      line-height:1.7;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:28px;
+    }
+
+    .glass-box{
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.16);
+      border-radius:28px;
+      padding:28px;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:0 18px 48px rgba(0,0,0,0.18);
+      transition:.35s ease;
+    }
+
+    .glass-box:hover{
+      transform:translateY(-4px);
+      background:rgba(255,255,255,0.16);
+    }
+
+    .glass-box h3{
+      margin-bottom:14px;
+      font-size:24px;
+    }
+
+    .glass-box p{
+      line-height:1.8;
+      color:rgba(255,255,255,0.88);
+      font-size:15px;
+    }
+
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .service-card{
+      background:rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.16);
+      border-radius:28px;
+      padding:28px 22px;
+      text-align:center;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      transition:.35s ease;
+      box-shadow:0 16px 40px rgba(0,0,0,0.18);
+    }
+
+    .service-card:hover{
+      transform:translateY(-8px) scale(1.02);
+      background:rgba(255,255,255,0.2);
+      box-shadow:0 24px 50px rgba(0,0,0,0.22);
+    }
+
+    .service-card h3{
+      font-size:24px;
+      margin-bottom:10px;
+    }
+
+    .service-script{
+      font-family:'Great Vibes',cursive;
+      font-size:28px;
+      color:#ffd5e4;
+      margin-bottom:10px;
+    }
+
+    .service-card p{
+      color:rgba(255,255,255,0.88);
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:28px;
+    }
+
+    .contact-list{
+      display:grid;
+      gap:16px;
+      margin-top:10px;
+    }
+
+    .contact-item{
+      background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.14);
+      border-radius:18px;
+      padding:16px 18px;
+      transition:.3s ease;
+    }
+
+    .contact-item:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateX(4px);
+    }
+
+    .contact-item strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:15px;
+    }
+
+    .contact-item span{
+      color:rgba(255,255,255,0.9);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .admin-section{
+      position:relative;
+      z-index:2;
+      padding:0 24px 90px;
+    }
+
+    .admin-wrapper{
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    .admin-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+
+    .admin-title{
+      font-size:32px;
+      font-weight:700;
+    }
+
+    .booking-list{
+      display:grid;
+      gap:18px;
+    }
+
+    .booking-card{
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.16);
+      border-radius:22px;
+      padding:20px;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+      box-shadow:0 12px 30px rgba(0,0,0,0.18);
+    }
+
+    .booking-info{
+      flex:1;
+      min-width:240px;
+    }
+
+    .booking-info h4{
+      font-size:20px;
+      margin-bottom:8px;
+      color:#ffd6e4;
+    }
+
+    .booking-info p{
+      margin:4px 0;
+      color:rgba(255,255,255,0.9);
+      font-size:14px;
+    }
+
+    .delete-btn{
+      padding:12px 20px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff4d4d,#d9003f);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s ease;
+    }
+
+    .delete-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 24px rgba(217,0,63,0.3);
+    }
+
+    .empty-state{
+      text-align:center;
+      color:rgba(255,255,255,0.85);
+      padding:30px 20px;
+      background:rgba(255,255,255,0.1);
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.14);
+    }
+
+    .popup{
+      position:fixed;
+      inset:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:rgba(0,0,0,0.48);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      visibility:hidden;
+      opacity:0;
+      transition:.3s ease;
+      z-index:120;
+      padding:20px;
+    }
+
+    .popup.active{
+      visibility:visible;
+      opacity:1;
+    }
+
+    .popup-card{
+      width:100%;
+      max-width:430px;
+      background:rgba(255,255,255,0.18);
+      border:1px solid rgba(255,255,255,0.25);
+      backdrop-filter:blur(22px);
+      -webkit-backdrop-filter:blur(22px);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:0 24px 70px rgba(0,0,0,0.32);
+      position:relative;
+    }
+
+    .popup-card h3{
+      font-size:28px;
+      margin-bottom:8px;
+    }
+
+    .popup-card p{
+      color:rgba(255,255,255,0.86);
+      font-size:14px;
+      margin-bottom:18px;
+    }
+
+    .popup-card input,
+    .popup-card select{
+      width:100%;
+      padding:13px 14px;
+      margin:8px 0;
+      border:none;
+      outline:none;
+      border-radius:14px;
+      background:#fff;
+      font-size:14px;
+    }
+
+    .submit{
+      width:100%;
+      padding:14px;
+      margin-top:10px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff4d88,#ff0066);
+      color:#fff;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      transition:.3s ease;
+    }
+
+    .submit:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 26px rgba(255,0,102,.3);
+    }
+
+    .close{
+      position:absolute;
+      top:16px;
+      right:20px;
+      font-size:30px;
+      color:#fff;
+      cursor:pointer;
+      line-height:1;
+    }
+
+    .footer{
+      text-align:center;
+      padding:30px 20px 40px;
+      color:rgba(255,255,255,0.82);
+      position:relative;
+      z-index:2;
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @media(max-width:992px){
+      .about-grid,
+      .contact-grid,
+      .services-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-left h1{
+        font-size:46px;
+      }
+
+      .navbar{
+        padding:16px 20px;
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .nav-links{
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .brand{
+        width:100%;
+        align-items:center;
+      }
+
+      .hero-content{
+        padding-left:10px;
+      }
+    }
+
+    @media(max-width:600px){
+      .hero{
+        padding-top:140px;
+      }
+
+      .hero-content{
+        padding-left:0;
+      }
+
+      .hero-left h1{
+        font-size:36px;
+      }
+
+      .hero-left p,
+      .section-title p{
+        font-size:15px;
+      }
+
+      .section-title h2{
+        font-size:32px;
+      }
+
+      .hero-actions{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .glass-box,
+      .service-card,
+      .popup-card{
+        padding:22px;
+      }
+
+      .booking-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video id="videoA" class="video-bg active" autoplay muted playsinline></video>
+  <video id="videoB" class="video-bg" autoplay muted playsinline></video>
+  <div class="video-overlay"></div>
+
+  <header class="navbar" id="navbar">
+    <div class="brand">
+      <div class="brand-title">Make by Ishkia</div>
+      <div class="brand-sub">Beauty Studio</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#about">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+      <a href="#admin">Bookings</a>
+      <a href="javascript:void(0)" class="nav-book" onclick="openPopup()">Book Now</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-tag">Premium Makeup Artist • Bridal • Party • Fashion</div>
+        <h1>Glow with <span>confidence</span> on your special day.</h1>
+        <p>
+          Welcome to Make by Ishkia — where elegance, beauty, and artistry come together.
+          From bridal glam to party-ready looks, we create styles that make you feel unforgettable.
+        </p>
+
+        <div class="hero-actions">
+          <a href="javascript:void(0)" class="btn-primary" onclick="openPopup()">Book Appointment</a>
+          <a href="#services" class="btn-secondary">Explore Services</a>
+          <a href="#admin" class="btn-admin">View Bookings</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>About Us</h2>
+        <p>
+          At Make by Ishkia, beauty is more than makeup — it is confidence, elegance, and the art of enhancing your natural glow.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="glass-box">
+          <h3>Who We Are</h3>
+          <p>
+            We specialize in premium bridal, engagement, party, and fashion makeup services. Our goal is to create looks that feel luxurious, timeless, and perfectly suited to your personality and occasion.
+          </p>
+        </div>
+
+        <div class="glass-box">
+          <h3>Why Choose Us</h3>
+          <p>
+            We focus on skin-friendly techniques, flawless finishes, attention to detail, and styles that photograph beautifully. Every booking is designed to make you feel confident and camera-ready.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Services</h2>
+        <p>
+          Premium makeup experiences curated for every important moment of your life.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Bridal</h3>
+          <div class="service-script">Makeup</div>
+          <p>Elegant bridal beauty with long-lasting finish, graceful shimmer, and a luxurious look for your big day.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>Engagement</h3>
+          <div class="service-script">Makeup</div>
+          <p>Soft radiant glam that leaves a beautiful first impression and complements your celebration perfectly.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>Party</h3>
+          <div class="service-script">Makeup</div>
+          <p>Glamorous party-ready looks for birthdays, receptions, family events, and every special evening.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>Non Bridal</h3>
+          <div class="service-script">Makeup</div>
+          <p>Fresh, polished looks for festive occasions, ceremonies, and celebrations where you want to shine.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>Fashion</h3>
+          <div class="service-script">Makeup</div>
+          <p>Creative, bold, and camera-friendly styles perfect for shoots, portfolios, and statement looks.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>Hair Styling</h3>
+          <div class="service-script">Styling</div>
+          <p>Elegant hairstyles that match your outfit, makeup, and occasion to complete your premium beauty look.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>
+          Book your appointment, ask about packages, or reach out for bridal and event inquiries.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="glass-box">
+          <h3>Get in Touch</h3>
+          <div class="contact-list">
+            <div class="contact-item">
+              <strong>Phone</strong>
+              <span>+91 9939249727</span>
+            </div>
+            <div class="contact-item">
+              <strong>WhatsApp</strong>
+              <span>Message us for quick booking support</span>
+            </div>
+            <div class="contact-item">
+              <strong>Location</strong>
+              <span>Bangalore, India</span>
+            </div>
+            <div class="contact-item">
+              <strong>Email</strong>
+              <span>makebyishkia@gmail.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-box">
+          <h3>Booking Hours</h3>
+          <p>
+            We are available for appointments, bridal bookings, and makeup consultations throughout the week. Reach out early for wedding season and special event dates to secure your slot.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-section" id="admin">
+    <div class="admin-wrapper">
+      <div class="admin-head">
+        <div class="admin-title">Booked Appointments</div>
+        <button class="btn-admin" onclick="loadBookings()">Refresh List</button>
+      </div>
+
+      <div id="bookingList" class="booking-list">
+        <div class="empty-state">Loading bookings...</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    © 2026 Make by Ishkia. All rights reserved.
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-card">
+      <div class="close" onclick="closePopup()">×</div>
+      <h3>Book Appointment</h3>
+      <p>Reserve your premium beauty slot with Make by Ishkia.</p>
+
+      <input id="name" placeholder="Your Name">
+      <input id="phone" placeholder="Phone Number">
+
+      <select id="service">
+        <option>Bridal Makeup</option>
+        <option>Engagement Makeup</option>
+        <option>Party Makeup</option>
+        <option>Non Bridal Makeup</option>
+        <option>Fashion Makeup</option>
+        <option>Hair Styling</option>
+      </select>
+
+      <input id="date" type="date">
+
+      <select id="time">
+        <option>10:00 AM</option>
+        <option>11:00 AM</option>
+        <option>12:00 PM</option>
+        <option>2:00 PM</option>
+        <option>4:00 PM</option>
+        <option>6:00 PM</option>
+      </select>
+
+      <button class="submit" onclick="book()">Confirm Booking</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey:"AIzaSyDabCgy-u99Kw3ubXgvb2gDxH8l9MQUZ48",
+      authDomain:"makeup-booking-92007.firebaseapp.com",
+      projectId:"makeup-booking-92007"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const popup = document.getElementById("popup");
+    const bookingList = document.getElementById("bookingList");
+    const navbar = document.getElementById("navbar");
+
+    window.openPopup = () => {
+      popup.classList.add("active");
+      document.body.classList.add("blur");
+    };
+
+    window.closePopup = () => {
+      popup.classList.remove("active");
+      document.body.classList.remove("blur");
+    };
+
+    const videos = [
+      "videos/v1.mp4",
+      "videos/v2.mp4",
+      "videos/v4.mp4"
+    ];
+
+    const videoA = document.getElementById("videoA");
+    const videoB = document.getElementById("videoB");
+
+    let currentIndex = 0;
+    let showingA = true;
+    let isSwitching = false;
+
+    function prepareVideo(video, src){
+      return new Promise((resolve) => {
+        video.src = src;
+        video.load();
+
+        const onReady = () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+          resolve();
+        };
+
+        video.addEventListener("canplay", onReady, { once:true });
+      });
+    }
+
+    async function switchVideo(){
+      if(isSwitching) return;
+      isSwitching = true;
+
+      currentIndex = (currentIndex + 1) % videos.length;
+
+      const currentVideo = showingA ? videoA : videoB;
+      const nextVideo = showingA ? videoB : videoA;
+
+      await prepareVideo(nextVideo, videos[currentIndex]);
+
+      nextVideo.classList.add("active");
+      currentVideo.classList.remove("active");
+
+      showingA = !showingA;
+
+      setTimeout(() => {
+        isSwitching = false;
+      }, 2200);
+    }
+
+    prepareVideo(videoA, videos[0]);
+
+    setInterval(() => {
+      switchVideo();
+    }, 7000);
+
+    let lastScrollTop = 0;
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > lastScrollTop && scrollTop > 80) {
+        navbar.classList.add("hide");
+      } else {
+        navbar.classList.remove("hide");
+      }
+
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    window.book = async function(){
+      try{
+        const nameEl = document.getElementById("name");
+        const phoneEl = document.getElementById("phone");
+        const serviceEl = document.getElementById("service");
+        const dateEl = document.getElementById("date");
+        const timeEl = document.getElementById("time");
+
+        const name = nameEl.value.trim();
+        const phone = phoneEl.value.trim();
+        const service = serviceEl.value;
+        const date = dateEl.value;
+        const time = timeEl.value;
+
+        if(!name || !phone || !date){
+          alert("Please fill all details");
+          return;
+        }
+
+        const snap = await getDocs(collection(db,"bookings"));
+
+        let booked = false;
+        snap.forEach(docSnap => {
+          const b = docSnap.data();
+          if(b.date === date && b.time === time){
+            booked = true;
+          }
+        });
+
+        if(booked){
+          alert("This time slot is already booked");
+          return;
+        }
+
+        await addDoc(collection(db,"bookings"), {
+          name,
+          phone,
+          service,
+          date,
+          time,
+          createdAt: new Date().toISOString()
+        });
+
+        const message =
+          "Hello, my name is " + name +
+          ". I booked " + service +
+          " on " + date +
+          " at " + time +
+          ". Phone: " + phone;
+
+        window.open("https://wa.me/919939249727?text=" + encodeURIComponent(message), "_blank");
+
+        nameEl.value = "";
+        phoneEl.value = "";
+        dateEl.value = "";
+        timeEl.selectedIndex = 0;
+        serviceEl.selectedIndex = 0;
+
+        closePopup();
+        loadBookings();
+      }catch(e){
+        console.error(e);
+        alert(e.message);
+      }
+    };
+
+    window.loadBookings = async function(){
+      try{
+        bookingList.innerHTML = `<div class="empty-state">Loading bookings...</div>`;
+
+        const snap = await getDocs(collection(db,"bookings"));
+
+        if(snap.empty){
+          bookingList.innerHTML = `<div class="empty-state">No bookings found.</div>`;
+          return;
+        }
+
+        let html = "";
+
+        snap.forEach((docSnap) => {
+          const booking = docSnap.data();
+
+          html += `
+            <div class="booking-card">
+              <div class="booking-info">
+                <h4>${booking.name || "No Name"}</h4>
+                <p><strong>Phone:</strong> ${booking.phone || "-"}</p>
+                <p><strong>Service:</strong> ${booking.service || "-"}</p>
+                <p><strong>Date:</strong> ${booking.date || "-"}</p>
+                <p><strong>Time:</strong> ${booking.time || "-"}</p>
+              </div>
+              <button class="delete-btn" onclick="deleteBooking('${docSnap.id}')">Delete</button>
+            </div>
+          `;
+        });
+
+        bookingList.innerHTML = html;
+      }catch(error){
+        console.error(error);
+        bookingList.innerHTML = `<div class="empty-state">Failed to load bookings.</div>`;
+      }
+    };
+
+    window.deleteBooking = async function(id){
+      try{
+        const confirmed = confirm("Are you sure you want to delete this booking?");
+        if(!confirmed) return;
+
+        await deleteDoc(doc(db, "bookings", id));
+        loadBookings();
+      }catch(error){
+        console.error(error);
+        alert("Failed to delete booking");
+      }
+    };
+
+    loadBookings();
+  </script>
+
+</body>
+</html>
